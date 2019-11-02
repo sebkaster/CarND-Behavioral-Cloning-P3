@@ -115,8 +115,7 @@ if __name__ == '__main__':
     # check that model Keras version is same as local Keras version
     f = h5py.File(args.model, mode='r')
     model_version = f.attrs.get('keras_version')
-    keras_version = keras_version.encode()
-    keras_version = keras_version.decode()
+    keras_version = keras_version.encode().decode()
     if model_version != keras_version:
         print('You are using Keras version ', keras_version,
               ', but the model was built using ', model_version)
