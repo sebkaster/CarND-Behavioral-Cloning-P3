@@ -11,6 +11,10 @@ from preprocess import preprocess_img
 from random import shuffle
 
 import matplotlib.pyplot as plt
+import keras
+from tensorflow.python.client import device_lib
+
+print(device_lib.list_local_devices)
 
 lines = []
 with open('data/driving_log.csv') as csvfile:
@@ -48,8 +52,8 @@ def generator(samples, batch_size=32):
                 current_path = 'data/IMG/' + batch_sample[1].split('/')[-1]
                 center_left = preprocess_img(cv2.imread(current_path))
                 images.append(center_left)
-                left_angle = float(line[3])
-                angles.append(left_angle + correction)
+                left_angle = float(line[3]) + correction
+                angles.append(left_angle)
                 image_flipped = np.fliplr(center_left)
                 measurement_flipped = -left_angle
                 images.append(image_flipped)
@@ -58,8 +62,8 @@ def generator(samples, batch_size=32):
                 current_path = 'data/IMG/' + batch_sample[2].split('/')[-1]
                 center_right = preprocess_img(cv2.imread(current_path))
                 images.append(center_right)
-                right_angle = float(line[3])
-                angles.append(right_angle - correction)
+                right_angle = float(line[3]) - correction
+                angles.append(right_angle)
                 image_flipped = np.fliplr(center_right)
                 measurement_flipped = -right_angle
                 images.append(image_flipped)
@@ -75,17 +79,26 @@ batch_size = 32
 train_generator = generator(train_samples, batch_size=batch_size)
 validation_generator = generator(validation_samples, batch_size=batch_size)
 
-model = tf.keras.Sequential()
-model.add(tf.keras.layers.Lambda(lambda x: tf.cast(x, tf.float32) / 127.5 - 1, input_shape=(90, 320, 3)))
+model = keras.Sequential()
+model.add(keras.layers.Lambda(lambda x: x / 127.5 - 1, input_shape=(90, 320, 3)))
 
-model.add(tf.keras.layers.Conv2D(6, 5, 5, activation='relu'))
-model.add(tf.keras.layers.MaxPooling2D())
-model.add(tf.keras.layers.Conv2D(6, 5, 5, activation='relu'))
-model.add(tf.keras.layers.MaxPooling2D(padding='same'))
-model.add(tf.keras.layers.Flatten())
-model.add(tf.keras.layers.Dense(120))
-model.add(tf.keras.layers.Dense(84))
-model.add(tf.keras.layers.Dense(1))
+model.add(
+    keras.layers.Conv2D(24, kernel_size=5, strides=2, activation='elu', padding='valid', kernel_regularizer=keras.regularizers.l2(0.001)))
+model.add(
+    keras.layers.Conv2D(36, kernel_size=5, strides=2, activation='elu', padding='valid', kernel_regularizer=keras.regularizers.l2(0.001)))
+model.add(
+    keras.layers.Conv2D(48, kernel_size=5, strides=2, activation='elu', padding='same', kernel_regularizer=keras.regularizers.l2(0.001)))
+
+model.add(
+    keras.layers.Conv2D(64, kernel_size=3, activation='elu', padding='same', kernel_regularizer=keras.regularizers.l2(0.001)))
+model.add(
+    keras.layers.Conv2D(64, kernel_size=3, activation='elu', padding='same', kernel_regularizer=keras.regularizers.l2(0.001)))
+
+model.add(keras.layers.Flatten())
+model.add(keras.layers.Dense(100, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
+model.add(keras.layers.Dense(50, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
+model.add(keras.layers.Dense(10, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
+model.add(keras.layers.Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_generator, steps_per_epoch=ceil(len(train_samples) / batch_size),

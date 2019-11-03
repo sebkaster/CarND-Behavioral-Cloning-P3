@@ -14,10 +14,9 @@ from io import BytesIO
 from preprocess import preprocess_img
 
 
-import tensorflow as tf
 from tensorflow.keras.models import load_model
 import h5py
-from tensorflow.keras import __version__ as keras_version
+from keras import __version__ as keras_version
 
 sio = socketio.Server()
 app = Flask(__name__)
@@ -67,7 +66,7 @@ def telemetry(sid, data):
         image_array = preprocess_img(image_array)
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
 
-        throttle = controller.update(float(speed))
+        throttle = 0.1 #controller.update(float(speed))
 
         print(steering_angle, throttle)
         send_control(steering_angle, throttle)
