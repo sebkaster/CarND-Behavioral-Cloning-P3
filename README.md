@@ -2,56 +2,84 @@
 
 [![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-Overview
+<!-- TABLE OF CONTENTS -->
+## Table of Contents
+
+* [About the Project](#about-the-project)
+* [Getting Started](#getting-started)
+  * [Prerequisites](#prerequisites)
+  * [Installation](#installation)
+* [Content](#content)
+* [Usage](#usage)
+* [Contributing](#contributing)
+* [License](#license)
+* [Contact](#contact)
+
+
+About the Project
 ---
+
 This repository contains starting files for the Behavioral Cloning Project.
 
-In this project, you will use what you've learned about deep neural networks and convolutional neural networks to clone driving behavior. You will train, validate and test a model using Keras. The model will output a steering angle to an autonomous vehicle.
+In this project, convolutional neural networks are used to clone driving behavior. 
+The trained model will output a steering angle to drive an autonomous vehicle autonomously in the simulator provided by Udacity.
+The simulator can be downloaded from the Udacity Self-Driving-Car-Nanodegree classroom.
 
-We have provided a simulator where you can steer a car around a track for data collection. You'll use image data and steering angles to train a neural network and then use this model to drive the car autonomously around the track.
-
-We also want you to create a detailed writeup of the project. Check out the [writeup template](https://github.com/udacity/CarND-Behavioral-Cloning-P3/blob/master/writeup_template.md) for this project and use it as a starting point for creating your own writeup. The writeup can be either a markdown file or a pdf document.
-
-To meet specifications, the project will require submitting five files: 
-* model.py (script used to create and train the model)
-* drive.py (script to drive the car - feel free to modify this file)
-* model.h5 (a trained Keras model)
-* a report writeup file (either markdown or pdf)
-* video.mp4 (a video recording of your vehicle driving autonomously around the track for at least one full lap)
-
-This README file describes how to output the video in the "Details About Files In This Directory" section.
-
-Creating a Great Writeup
----
-A great writeup should include the [rubric points](https://review.udacity.com/#!/rubrics/432/view) as well as your description of how you addressed each point.  You should include a detailed description of the code used (with line-number references and code snippets where necessary), and links to other supporting documents or external references.  You should include images in your writeup to demonstrate how your code works with examples.  
-
-All that said, please be concise!  We're not looking for you to write a book here, just a brief description of how you passed each rubric point, and references to the relevant code :). 
-
-You're not required to use markdown for your writeup.  If you use another method please just submit a pdf of your writeup.
-
-The Project
----
-The goals / steps of this project are the following:
+The steps of this project are the following:
 * Use the simulator to collect data of good driving behavior 
 * Design, train and validate a model that predicts a steering angle from image data
-* Use the model to drive the vehicle autonomously around the first track in the simulator. The vehicle should remain on the road for an entire loop around the track.
-* Summarize the results with a written report
+* Use the model to drive the vehicle autonomously around a track in the simulator.
 
-### Dependencies
-This lab requires:
+<!-- GETTING STARTED -->
+## Getting Started
 
-* [CarND Term1 Starter Kit](https://github.com/udacity/CarND-Term1-Starter-Kit)
+The software is written in Python 3.5 and tested on Linux. The usage of the Miniconda Python distribution is strongly recommended.
 
-The lab enviroment can be created with CarND Term1 Starter Kit. Click [here](https://github.com/udacity/CarND-Term1-Starter-Kit/blob/master/README.md) for the details.
+### Prerequisites
 
-The following resources can be found in this github repository:
-* drive.py
-* video.py
-* writeup_template.md
+* Miniconda (https://docs.conda.io/en/latest/miniconda.html)
 
-The simulator can be downloaded from the classroom. In the classroom, we have also provided sample data that you can optionally use to help train your model.
+### Installation
 
-## Details About Files In This Directory
+1. Clone this repo
+```sh
+git clone https://github.com/sebkaster/CarND-Behavioral-Cloning-P3.git
+```
+
+2. Create Anaconda environemnt
+```sh
+conda create -n behaviour_cloning_env anaconda python=3.5
+```
+
+3. Actiavate environment
+```sh
+conda activate behaviour_cloning_env
+```
+
+4. Install pip package manager
+```sh
+conda install pip
+```
+
+5. Install required python modules
+```
+python -m pip install -r requirements.txt
+```
+
+<!-- CONTENT -->
+## Content
+
+* `model.py`: Script used to create and train the model.
+* `drive.py`: Script to drive the car.
+* `video.py`: Script for recording the vehicle driving autonomously.
+* `preprocess.py`: Functions for pre-processing video frames.
+* `model.h5`: A trained Keras model.
+* `writeup.md`: Documentation of the project. 
+* `video.mp4`: Video recording of vehicle driving autonomously around the track.
+
+
+<!-- USAGE EXAMPLES -->
+## Usage
 
 ### `drive.py`
 
@@ -112,14 +140,25 @@ python video.py run1 --fps 48
 
 Will run the video at 48 FPS. The default FPS is 60.
 
-#### Why create a video
+<!-- CONTRIBUTING -->
+## Contributing
 
-1. It's been noted the simulator might perform differently based on the hardware. So if your model drives succesfully on your machine it might not on another machine (your reviewer). Saving a video is a solid backup in case this happens.
-2. You could slightly alter the code in `drive.py` and/or `video.py` to create a video of what your model sees after the image is processed (may be helpful for debugging).
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-### Tips
-- Please keep in mind that training images are loaded in BGR colorspace using cv2 while drive.py load images in RGB to predict the steering angles.
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
+<!-- LICENSE -->
+## License
 
+Distributed under the MIT License.
+
+<!-- CONTACT -->
+## Contact
+
+Sebastian Kaster - sebastiankaster@googlemail.com
+
+Project Link: [https://github.com/sebkaster/CarND-Behavioral-Cloning-P3](https://github.com/sebkaster/CarND-Behavioral-Cloning-P3)

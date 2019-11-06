@@ -134,6 +134,6 @@ model.add(keras.layers.Dense(1))
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_data, steps_per_epoch=ceil(len(training_data) / 32),
                     validation_data=val_data, validation_steps=ceil(len(validation_data) / 32),
-                    epochs=9)
+                    epochs=10)
 
 model.save('model.h5')
