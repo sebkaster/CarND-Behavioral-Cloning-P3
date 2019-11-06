@@ -110,31 +110,30 @@ val_data = batch_generator(validation_data, validation_flag=True)
 model = keras.Sequential()
 
 model.add(
-    keras.layers.Conv2D(24, kernel_size=5, strides=2, activation='relu', padding='same',
+    keras.layers.Conv2D(24, kernel_size=5, strides=2, activation='elu', padding='same',
                         kernel_regularizer=keras.regularizers.l2(0.001), input_shape=(3, 66, 200)))
 model.add(
-    keras.layers.Conv2D(36, kernel_size=5, strides=2, activation='relu', padding='same',
+    keras.layers.Conv2D(36, kernel_size=5, strides=2, activation='elu', padding='same',
                         kernel_regularizer=keras.regularizers.l2(0.001)))
 model.add(
-    keras.layers.Conv2D(48, kernel_size=5, strides=2, activation='relu', padding='same',
-                        kernel_regularizer=keras.regularizers.l2(0.001)))
-
-model.add(
-    keras.layers.Conv2D(64, kernel_size=3, activation='relu', padding='same',
+    keras.layers.Conv2D(48, kernel_size=5, strides=2, activation='elu', padding='same',
                         kernel_regularizer=keras.regularizers.l2(0.001)))
 model.add(
-    keras.layers.Conv2D(64, kernel_size=3, activation='relu', padding='same',
+    keras.layers.Conv2D(64, kernel_size=3, activation='elu', padding='same',
+                        kernel_regularizer=keras.regularizers.l2(0.001)))
+model.add(
+    keras.layers.Conv2D(64, kernel_size=3, activation='elu', padding='same',
                         kernel_regularizer=keras.regularizers.l2(0.001)))
 
 model.add(keras.layers.Flatten())
 model.add(keras.layers.Dense(100, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
-model.add(keras.layers.Dense(50, kernel_regularizergit =keras.regularizers.l2(0.001), activation='elu'))
+model.add(keras.layers.Dense(50, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(10, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_data, steps_per_epoch=ceil(len(training_data) / 32),
                     validation_data=val_data, validation_steps=ceil(len(validation_data) / 32),
-                    epochs=7)
+                    epochs=9)
 
 model.save('model.h5')
