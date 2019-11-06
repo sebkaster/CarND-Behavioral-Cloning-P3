@@ -128,7 +128,7 @@ model.add(
 
 model.add(keras.layers.Flatten())
 model.add(keras.layers.Dense(100, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
-model.add(keras.layers.Dense(50, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
+model.add(keras.layers.Dense(50, kernel_regularizergit =keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(10, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(1))
 
