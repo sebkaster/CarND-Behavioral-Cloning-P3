@@ -12,11 +12,10 @@ from PIL import Image
 from flask import Flask
 from io import BytesIO
 from preprocess import preprocess_img
-
-
 from tensorflow.keras.models import load_model
 import h5py
 from keras import __version__ as keras_version
+
 
 sio = socketio.Server()
 app = Flask(__name__)
@@ -62,13 +61,16 @@ def telemetry(sid, data):
         # The current image from the center camera of the car
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
-        image_array = np.asarray(image)
-        image_array = preprocess_img(image_array)
+        image_array = preprocess_img(np.asarray(image))
+
+        image_array = np.reshape(image_array, (3, 66, 200))
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+        speed = float(speed)
 
-        throttle = 0.1 #controller.update(float(speed))
 
-        print(steering_angle, throttle)
+        throttle = 0.10 # controller.update(float(speed))
+
+        print('angle:', steering_angle, 'throttle:', throttle)
         send_control(steering_angle, throttle)
 
         # save frame
@@ -122,6 +124,7 @@ if __name__ == '__main__':
               ', but the model was built using ', model_version)
 
     model = load_model(args.model)
+    print(model.summary())
 
     if args.image_folder != '':
         print("Creating image folder at {}".format(args.image_folder))
