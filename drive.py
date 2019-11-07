@@ -99,6 +99,7 @@ def send_control(steering_angle, throttle):
         skip_sid=True)
 
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Remote Driving')
     parser.add_argument(
@@ -124,7 +125,12 @@ if __name__ == '__main__':
               ', but the model was built using ', model_version)
 
     model = load_model(args.model)
-    print(model.summary())
+
+    from contextlib import redirect_stdout
+
+    with open('modelsummary.txt', 'w') as f:
+        with redirect_stdout(f):
+            model.summary()
 
     if args.image_folder != '':
         print("Creating image folder at {}".format(args.image_folder))

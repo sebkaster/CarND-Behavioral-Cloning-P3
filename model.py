@@ -6,6 +6,55 @@ import os
 from math import ceil
 from preprocess import img_crop, img_normalization
 
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+
+
+def img_visualization(img):
+
+    plt.imshow(img)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.gca().xaxis.set_major_locator(ticker.NullLocator())
+    plt.gca().yaxis.set_major_locator(ticker.NullLocator())
+    plt.savefig("original.png", dpi=300, bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    img_cropped = img_crop(img)
+    plt.imshow(img_cropped)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.gca().xaxis.set_major_locator(ticker.NullLocator())
+    plt.gca().yaxis.set_major_locator(ticker.NullLocator())
+    plt.savefig("cropped.png", dpi=300, bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    img_random_brighness = random_brightness(img)
+    plt.imshow(img_random_brighness)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.gca().xaxis.set_major_locator(ticker.NullLocator())
+    plt.gca().yaxis.set_major_locator(ticker.NullLocator())
+    plt.savefig("random-brightness.png", dpi=300, bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    img_normalized = img_normalization(img)
+    plt.imshow(img_normalized)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.gca().xaxis.set_major_locator(ticker.NullLocator())
+    plt.gca().yaxis.set_major_locator(ticker.NullLocator())
+    plt.savefig("normalized.png", dpi=300, bbox_inches='tight', pad_inches=0)
+    plt.close()
+
+    flipped_img, _ = img_flip(img, 1)
+    plt.imshow(flipped_img)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.gca().xaxis.set_major_locator(ticker.NullLocator())
+    plt.gca().yaxis.set_major_locator(ticker.NullLocator())
+    plt.savefig("flipped.png", dpi=300, bbox_inches='tight', pad_inches=0)
+    plt.close()
 
 def random_brightness(img):
     img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2HSV)
@@ -18,7 +67,6 @@ def random_brightness(img):
 def img_flip(img, angle):
     img = cv2.flip(img, 1)
     return img, -1.0 * angle
-
 
 def image_generator(data, validation_flag):
     data = data.sample(frac=1).reset_index(drop=True)
@@ -99,6 +147,16 @@ num_training = (int(len(revised_log) * 0.8))
 
 training_data = revised_log[0:num_training]
 
+for index, row in driving_log.iterrows():
+
+    fname = os.path.basename(row['left'])
+    steering = np.float32(row['steering']) + 0.25
+    img = keras.preprocessing.image.load_img('./data/IMG/' + fname)
+    img = np.array(img)
+    img_visualization(img)
+    break
+
+
 print("Num of Training data", len(training_data))
 validation_data = revised_log[num_training:]
 print("Num of Validation data", len(validation_data))
@@ -130,10 +188,12 @@ model.add(keras.layers.Dense(100, kernel_regularizer=keras.regularizers.l2(0.001
 model.add(keras.layers.Dense(50, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(10, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(1))
-
+st.title("MNIST CNN - Keras")
+st.write("You should see a graph of vertically connected nodes.")
+st.write(model)
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_data, steps_per_epoch=ceil(len(training_data) / 32),
                     validation_data=val_data, validation_steps=ceil(len(validation_data) / 32),
                     epochs=10)
 
-model.save('model.h5')
+#model.save('model.h5')
