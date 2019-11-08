@@ -9,7 +9,6 @@ from preprocess import img_crop, img_normalization
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 
-
 def img_visualization(img):
 
     plt.imshow(img)
@@ -188,9 +187,6 @@ model.add(keras.layers.Dense(100, kernel_regularizer=keras.regularizers.l2(0.001
 model.add(keras.layers.Dense(50, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(10, kernel_regularizer=keras.regularizers.l2(0.001), activation='elu'))
 model.add(keras.layers.Dense(1))
-st.title("MNIST CNN - Keras")
-st.write("You should see a graph of vertically connected nodes.")
-st.write(model)
 model.compile(loss='mse', optimizer='adam')
 model.fit_generator(train_data, steps_per_epoch=ceil(len(training_data) / 32),
                     validation_data=val_data, validation_steps=ceil(len(validation_data) / 32),
