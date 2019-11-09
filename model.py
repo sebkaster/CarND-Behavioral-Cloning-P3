@@ -146,16 +146,6 @@ num_training = (int(len(revised_log) * 0.8))
 
 training_data = revised_log[0:num_training]
 
-for index, row in driving_log.iterrows():
-
-    fname = os.path.basename(row['left'])
-    steering = np.float32(row['steering']) + 0.25
-    img = keras.preprocessing.image.load_img('./data/IMG/' + fname)
-    img = np.array(img)
-    img_visualization(img)
-    break
-
-
 print("Num of Training data", len(training_data))
 validation_data = revised_log[num_training:]
 print("Num of Validation data", len(validation_data))
