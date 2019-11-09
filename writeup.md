@@ -52,12 +52,12 @@ and is known to be very successful for this task. The table below shows my imple
 
 ![alt text][net]
 
-The input of this network is an image with a shape of (33, 66, 200). The network itself consists of three 5x5 convulution layers, two 3x3 convulution layers, and three fully converted layers.
+The input of this network is an image with a shape of (33, 66, 200). The network itself consists of three 5x5 convolution layers, two 3x3 convolution layers, and three fully converted layers.
 As the activation function, I started with `relu`, but later I changed to `elu`. The `elu` activation function has the advantage that it does not have the dying ReLU problem. 
 
 Moreover, I played around with Dropout and MaxPooling layers. Unfortunately, the model performance on the track did get worse with these layers. So I excluded them from the network. Instead I used L2 kernel regularizers to reduce overfitting.
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 The model used an adam optimizer and a mean-squared error loss function.
 
@@ -82,15 +82,13 @@ Besides a lot of straight sections the test track mainly consists of left turn. 
 ![alt text][flipped]
 
 I started to train my model with the data set provided by Udacity. The trained model performed quite well on the test track, but struggled to stay on the lane at some poins.
-Thus, I decided to create my own data set. I 
+Thus, I decided to create my own data set.
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Furthermore, I recorded scenes that show what oen has to do when the car gets close to the border.
+To capture good driving behavior, I first recorded two laps on track one using center lane driving. Furthermore, I recorded scenes that show what one has to do when the car gets close to the border.
 This scenes are essential since without these scenes the model could not learn what do in these situations.
 
 In training mode, the simulator produces three images per frame while recording corresponding to left-, right-, and center-mounted cameras, each giving a different perspective of the track ahead. 
 I used all of these images. 
-
-
 
 After the collection process, I had 6301 number of data points. This data set had a lot of straight sections. Thus I randomly removed 75% of all images in straight sections.
 Thereby, the data set is reduced to 2356 image frames.

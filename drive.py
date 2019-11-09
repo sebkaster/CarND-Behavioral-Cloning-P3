@@ -126,12 +126,6 @@ if __name__ == '__main__':
 
     model = load_model(args.model)
 
-    from contextlib import redirect_stdout
-
-    with open('modelsummary.txt', 'w') as f:
-        with redirect_stdout(f):
-            model.summary()
-
     if args.image_folder != '':
         print("Creating image folder at {}".format(args.image_folder))
         if not os.path.exists(args.image_folder):
